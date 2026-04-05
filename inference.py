@@ -37,7 +37,7 @@ async def run_inference():
     
     print(f"[START] task={TASK_ID} env=volks-legal-ai model={MODEL_NAME}")
     
-    obs = await env.reset()
+    obs = env.reset()
     rewards = []
     
     for step in range(1, 7):
@@ -59,7 +59,7 @@ async def run_inference():
                 act_dict = act_dict["action"]
         action = LegalAction(**act_dict)
         
-        obs, reward, done, info = await env.step(action)
+        obs, reward, done, info = env.step(action)
         rewards.append(reward)
         
         print(f"[STEP] step={step} action={act_dict['action_type']} reward={reward:.2f} done={str(done).lower()} error=null")
