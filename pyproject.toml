@@ -1,0 +1,27 @@
+# filename: pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "volks-legal-ai"
+version = "1.0.0"
+description = "Multilingual Legal Assistance Environment for OpenEnv Hackathon"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic>=2.0.0",
+    "openai>=1.0.0",
+    "pyyaml>=6.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.20.0",
+    "openenv-core>=0.2.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["env*", "server*"]
+
+[project.scripts]
+server = "server.app:main"
