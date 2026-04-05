@@ -1,3 +1,12 @@
+---
+title: Vox Legal AI
+emoji: ⚖️
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+---
+
 # Volks Legal AI — Multilingual Legal Triage
 
 ## Project Overview
