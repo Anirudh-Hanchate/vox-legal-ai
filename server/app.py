@@ -8,7 +8,7 @@ app = create_app(
     LegalAction,
     LegalObservation,
     env_name="volks-legal-ai",
-    max_concurrent_envs=10,
+    max_concurrent_envs=1,
 )
 
 def main(host: str = "0.0.0.0", port: int = 8000):
