@@ -103,3 +103,6 @@ class VolksLegalEnv:
 
     async def state(self):
         return self.state_data
+
+    def close(self):
+        pass
