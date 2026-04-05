@@ -9,6 +9,9 @@ class LegalObservation(BaseModel):
     priority: Optional[str] = None
     legal_steps_generated: List[str] = []
     assigned_lawyer: Optional[str] = None
+    reward: float = 0.0
+    done: bool = False
+    info: dict = {}
 
 class LegalAction(BaseModel):
     action_type: Literal["classify_case", "set_priority", "generate_guidance", "assign_lawyer"]
