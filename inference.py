@@ -1,7 +1,10 @@
 import os
 import json
 import asyncio
+from dotenv import load_dotenv
 from openai import OpenAI
+
+load_dotenv()
 from env.env import VolksLegalEnv
 from env.models import LegalAction
 
@@ -11,13 +14,18 @@ MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
 TASK_ID = os.getenv("TASK_ID", "task_ramesh_kn")
 
 SYSTEM_PROMPT = """You are Volks Legal AI. Respond ONLY with a JSON object.
-Actions: 
-- {"action_type": "classify_case", "value": "property|finance|civil|criminal"}
-- {"action_type": "set_priority", "value": "low|medium|high"}
-- {"action_type": "generate_guidance", "value": "Step 1...\\nStep 2...\\nStep 3..."} (In user's language)
-- {"action_type": "assign_lawyer", "value": "Adv. Name"}
+You are playing a turn-based game. You can ONLY output ONE action per step. NEVER output multiple actions at once.
+Your JSON must strictly have exactly two keys: "action_type" and "value".
 
-Lawyers:
+Here is the exact sequence of 4 actions you must take, one at a time:
+1. {"action_type": "classify_case", "value": "property|finance|civil|criminal"}
+2. {"action_type": "set_priority", "value": "low|medium|high"}
+3. {"action_type": "generate_guidance", "value": "Step 1...\\nStep 2...\\nStep 3..."}
+4. {"action_type": "assign_lawyer", "value": "Adv. Name"}
+
+Look at the Status in the prompt to see which fields are already filled, and generate the NEXT single logical action. Do NOT repeat actions.
+
+Lawyers mapping (case_type, location):
 - (property, bengaluru): Adv. Shankar (Property Specialist)
 - (finance, mumbai): Adv. Mishra (Financial Crimes)
 - (civil, delhi): Adv. Gupta (Civil Litigation)
@@ -42,6 +50,13 @@ async def run_inference():
         )
         
         act_dict = json.loads(response.choices[0].message.content)
+        if isinstance(act_dict, list) and len(act_dict) > 0:
+            act_dict = act_dict[0]
+        if isinstance(act_dict, dict):
+            if "actions" in act_dict and isinstance(act_dict["actions"], list) and len(act_dict["actions"]) > 0:
+                act_dict = act_dict["actions"][0]
+            elif "action" in act_dict and isinstance(act_dict["action"], dict):
+                act_dict = act_dict["action"]
         action = LegalAction(**act_dict)
         
         obs, reward, done, info = await env.step(action)
