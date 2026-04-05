@@ -1,5 +1,6 @@
 import asyncio
 from typing import Dict, List, Any, Optional
+from openenv.core.env_server.interfaces import Environment
 from .models import LegalObservation, LegalAction
 
 # Real-world Mapping: (Type, Location) -> Lawyer
@@ -35,7 +36,7 @@ CASE_SAMPLES = [
     }
 ]
 
-class VolksLegalEnv:
+class VolksLegalEnv(Environment[LegalAction, LegalObservation, Any]):
     def __init__(self, task_id: str = "task_ramesh_kn"):
         self.task_id = task_id
         self.current_case = next((c for c in CASE_SAMPLES if c["id"] == task_id), CASE_SAMPLES[0])
