@@ -47,7 +47,16 @@ class VolksLegalEnv(Environment[LegalAction, LegalObservation, Any]):
         self.total_reward = 0.0
         self.step_count = 0
 
-    def reset(self):
+    def reset(
+        self,
+        seed: Optional[int] = None,
+        episode_id: Optional[str] = None,
+        **kwargs: Any,
+    ) -> LegalObservation:
+        if "task_id" in kwargs:
+            self.task_id = kwargs["task_id"]
+            self.current_case = next((c for c in CASE_SAMPLES if c["id"] == self.task_id), CASE_SAMPLES[0])
+            
         self.state_data = {"case_type": None, "priority": None, "steps": [], "lawyer": None, "completed_actions": set()}
         self.total_reward = 0.0
         self.step_count = 0
@@ -64,7 +73,12 @@ class VolksLegalEnv(Environment[LegalAction, LegalObservation, Any]):
             assigned_lawyer=self.state_data["lawyer"]
         )
 
-    def step(self, action: LegalAction):
+    def step(
+        self,
+        action: LegalAction,
+        timeout_s: Optional[float] = None,
+        **kwargs: Any,
+    ) -> LegalObservation:
         self.step_count += 1
         reward = 0.0
         gt = self.current_case["gt"]
@@ -102,6 +116,7 @@ class VolksLegalEnv(Environment[LegalAction, LegalObservation, Any]):
         done = len(self.state_data["completed_actions"]) >= 4 or self.step_count >= 8
         return self._get_obs(), reward, done, {"total_score": self.total_reward}
 
+    @property
     def state(self):
         return self.state_data
 
