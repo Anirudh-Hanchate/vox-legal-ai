@@ -112,7 +112,7 @@ class VolksLegalEnv(Environment[LegalAction, LegalObservation, Any]):
                 self.state_data["completed_actions"].add("lawyer")
             else: reward = -0.2
 
-        self.total_reward = max(0.0, min(1.0, self.total_reward + reward))
+        self.total_reward = max(0.01, min(0.99, self.total_reward + reward))
         done = len(self.state_data["completed_actions"]) >= 4 or self.step_count >= 8
         return self._get_obs(), reward, done, {"total_score": self.total_reward}
 

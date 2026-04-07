@@ -2,12 +2,15 @@ name: "volks-legal-ai"
 version: "1.0.0"
 description: "Multilingual (EN, KN, HI) Legal Assistance and Triage Environment."
 tasks:
-  - id: "easy"
-    description: "Identify case type (e.g., property, finance)."
-  - id: "medium"
-    description: "Classify, prioritize, and provide local language guidance."
-  - id: "hard"
-    description: "Full pipeline including location-based lawyer recommendation."
+  - id: "task_ramesh_kn"
+    description: "Solve property case."
+    grader: "auto"
+  - id: "task_rahul_hi"
+    description: "Classify finance case."
+    grader: "auto"
+  - id: "task_john_en"
+    description: "Full pipeline including lawyer recommendation."
+    grader: "auto"
 metadata:
   languages: ["english", "kannada", "hindi"]
   regions: ["Bengaluru", "Mumbai", "Delhi"]
