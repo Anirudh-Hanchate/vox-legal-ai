@@ -1,16 +1,16 @@
-# filename: openenv.yaml
 name: "volks-legal-ai"
 version: "1.0.0"
-description: "Multilingual Legal Triage Environment."
+description: "Multilingual (EN, KN, HI) Legal Assistance and Triage Environment."
 tasks:
   - id: "task_ramesh_kn"
-    description: "Handle property dispute in Kannada."
-    difficulty: "easy"
+    description: "Solve property case."
+    grader: "auto"
   - id: "task_rahul_hi"
-    description: "Handle financial dispute in Hindi."
-    difficulty: "medium"
+    description: "Classify finance case."
+    grader: "auto"
   - id: "task_john_en"
-    description: "Handle property dispute in English."
-    difficulty: "hard"
+    description: "Full pipeline including lawyer recommendation."
+    grader: "auto"
 metadata:
   languages: ["english", "kannada", "hindi"]
+  regions: ["Bengaluru", "Mumbai", "Delhi"]
